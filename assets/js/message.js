@@ -20,7 +20,7 @@ const messageMeDb = firebase.database().ref("users")
 messageMeDb.on("value", (snapshot) => {
     const userList = document.getElementById("userList");
 
-    
+    userList.innerHTML = "";
 
 if (snapshot.exists()) {
    
@@ -35,8 +35,13 @@ if (snapshot.exists()) {
 
 
         const usersImages = document.createElement("img");
-        usersImages.src = userphoto;
         usersImages.classList.add("profileImage");
+        if (userphoto==null) {
+            usersImages.src = "./assets/images/logo/comandantelogo.png";    
+        } else {
+            usersImages.src = userphoto;
+        
+        }
         listItem.appendChild(usersImages);
 
         const users = document.createElement("span");
@@ -76,7 +81,9 @@ if (snapshot.exists()) {
             }
         };
         
-        
+        if (username!=storedUsername) {
+            
+        }
         unseenRefCtoO.on("child_added", (unseenMessageSnapshot) => {
             const unseenMessage = unseenMessageSnapshot.val();
             if (unseenMessage.sender !== storedUsername && unseenMessage.seen === false) {
@@ -151,8 +158,7 @@ if (snapshot.exists()) {
 
         userList.appendChild(listItem);
     });
-}
-
+} 
 });
 
 
@@ -190,14 +196,12 @@ messageMeDb.orderByChild("name").equalTo(storedUsername).once("value", (snapshot
                 displayUsernameElement.textContent = `${storedUsername}`;
 
                 const displayProfileImageElement = document.getElementById("displayProfileImage");
-                const storedProfileImageUrl = user.val().photo;
-
-             
+                const storedProfileImageUrl = user.val().photo;      
                 if (storedProfileImageUrl) {
                     displayProfileImageElement.src = storedProfileImageUrl;
                 } else {
                 
-                    displayProfileImageElement.src = "https://example.com/default-profile.jpg";
+                    displayProfileImageElement.src = "./assets/images/logo/comandantelogo.png";
                 }
             } else {
                 alert('Incorrect password!');
@@ -205,8 +209,9 @@ messageMeDb.orderByChild("name").equalTo(storedUsername).once("value", (snapshot
             }
         });
     } else {
-        alert('User not found!');
+        
         document.getElementById("displayUsername").textContent = "";
+        window.location.href = "index.htm";
     }
 });
 
@@ -222,6 +227,9 @@ function displayUserMessages(otherUsername, otherUserImage) {
     const userMessagesContainer = document.getElementById("userMessagesContainer");
     userMessagesContainer.innerHTML = "";
   
+    if (otherUserImage==null) {
+        otherUserImage = "./assets/images/logo/comandantelogo.png";    
+    } 
     userMessagesContainer.innerHTML = `
         <div class="otherUser">
             <img class="profileImage" src="${otherUserImage}"/>
@@ -239,11 +247,19 @@ function displayUserMessages(otherUsername, otherUserImage) {
     const messageList = document.getElementById("messageList");
     
     
-    const conversationRef1 = firebase.database().ref("conversations").child(`${storedUsername}_${otherUsername}`);
-    const conversationRef2 = firebase.database().ref("conversations").child(`${otherUsername}_${storedUsername}`);
+   
     
-    const combinedRefs = [conversationRef1, conversationRef2];
-    
+    let combinedRefs;
+
+    if (otherUsername !== storedUsername) {
+        const conversationRef1 = firebase.database().ref("conversations").child(`${storedUsername}_${otherUsername}`);
+        const conversationRef2 = firebase.database().ref("conversations").child(`${otherUsername}_${storedUsername}`);
+        combinedRefs = [conversationRef1, conversationRef2];
+    } else if (otherUsername === storedUsername) {
+        const conversationRef2 = firebase.database().ref("conversations").child(`${otherUsername}_${storedUsername}`);
+        combinedRefs = [conversationRef2];
+   
+    }
     
     combinedRefs.forEach((conversationRef) => {
 
@@ -252,7 +268,9 @@ function displayUserMessages(otherUsername, otherUserImage) {
             const listItem = document.createElement("li");
             const messageTime = new Date(message.timestamp).toLocaleTimeString();
 
-            if (message.sender === storedUsername) {
+        
+      
+            if (message.sender === storedUsername ) {
                 const me = document.createElement("span");
                 const time = document.createElement("sub");
                 time.classList.add("time");
@@ -291,9 +309,7 @@ function displayUserMessages(otherUsername, otherUserImage) {
                 if (message.sender === clickedUsername && !message.seen) {
                     console.log('Checking otherUsername:', otherUsername);
                     snapshot.ref.child('seen').set(true);
-                }  
-                
-                
+                }    
                 
             }
             messageList.appendChild(listItem);
@@ -367,7 +383,6 @@ search.addEventListener("input",()=> {
     }
 });
 
-
 document.getElementById('imageUpload').addEventListener('change', function (e) {
     const fileInput = e.target;
 
@@ -380,17 +395,18 @@ document.getElementById('imageUpload').addEventListener('change', function (e) {
         uploadTask.on(
             'state_changed',
             (snapshot) => {
+                // Handle upload state changes if needed
             },
             (error) => {
                 console.error('Error uploading image:', error);
             },
             () => {
-
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                     messageMeDb.orderByChild('name').equalTo(storedUsername).once('child_added', (userSnapshot) => {
                         const userId = userSnapshot.key;
                         messageMeDb.child(userId).update({ photo: downloadURL });
 
+                        // Update the profile image without reloading the user list
                         document.getElementById('displayProfileImage').src = downloadURL;
                     });
                 });

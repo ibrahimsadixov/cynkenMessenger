@@ -1,0 +1,17 @@
+@media (max-width: 1200px) {
+#displayUsername{
+    font-size: .8rem !important;
+}
+.lastMessage{
+    font-size: .4rem !important;
+}
+.username{
+    font-size: .8rem !important;
+}
+.profileImage{
+    max-width: 25px !important;
+    max-height: 25px!important;
+    min-width: 15px !important;
+    min-height: 15px!important;
+}
+}
