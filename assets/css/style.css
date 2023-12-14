@@ -1,0 +1,49 @@
+.background{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    transition: background-image .5s ease-in-out; 
+    background-color: rgba(0, 0, 0, 0.1); 
+
+}
+
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    max-width: 1000px;
+    height: 60%;
+    max-height: 500px;
+    background-color: rgba(209, 96, 96, 0.3);
+    border: 0 solid transparent;
+    border-radius: 15px;
+    
+}
+.eye{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 10px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    color: whitesmoke;
+   
+}
+
+.square{
+    height: 15px;
+    width: 15px;
+    background-color: rgba(245, 245, 245, .8);
+    border: 1px solid whitesmoke;
+    border-radius: 50%;
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/images/logo/comandantelogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/message.css">
+    <link rel="stylesheet" href="./assets/css/responsiveMessage.css">
+    <title>Cynken</title>
+</head>
+<!-- <audio id="notification" controls="false" autoplay style="display: none;">
+    <source src="./assets/sound/videoplayback.m4a" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+   -->
+<body>
+    <div class="background">
+        <a href="index.htm" id="logOut">ÇIXIŞ</a>
+
+    <div class="container">
+
+        <div class="left">
+            <div class="account">
+       
+
+
+            <label id="profilePhoto" for="imageUpload" style="cursor: pointer;">
+                <img id="displayProfileImage">
+                <img class="img" src="./assets/images/photo-camera-vector-icon-600nw-1345025204.webp"">
+              </label>
+        
+              <input type="file" id="imageUpload" style="display: none;" accept="image/*">
+            
+        <h2 id="displayUsername"></h2>
+    </div>
+
+        <input type="text" id="search" placeholder="Axtarış"> 
+        <ul id="userList">
+            <h2>Users</h2>
+        </ul>
+    </div>
+    <div class="right">
+        <div id="userMessagesContainer"></div>
+    </div>
+    </div>
+</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+
+<script src="./assets/js/message.js"></script>
+<script src="./assets/js/logOut.js"></script>
+
+<script>
+       let notifications = document.getElementById("notification");
+
+notifications.addEventListener("click", () => {
+    console.log("It worked!");
+});
+</script>
+
+</body>
+</html>
